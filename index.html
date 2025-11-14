@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vellnify Vending Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="splash" id="splashScreen" aria-live="polite">
+<div class="splash-logo">VELLNIFY</div>
+<div class="splash-tagline">Vending Console</div>
+<div class="spinner" aria-hidden="true"></div>
+</div>
+<div class="app-shell" aria-live="polite">
+<header class="header">
+<div class="header-left">
+<span class="logo">VELLNIFY</span>
+<span class="subtitle">Vending Console</span>
+</div>
+<div class="status-pill">Ready</div>
+</header>
+<div class="content">
+<section class="products-panel">
+<div class="toolbar">
+<div class="categories" id="categoryFilters"></div>
+</div>
+<div class="product-grid" id="products" aria-live="polite"></div>
+</section>
+<aside class="cart-panel">
+<div class="cart-header">
+<div>
+<h2>Cart</h2>
+<p>Tap +/- to adjust</p>
+</div>
+<span id="cartCount">0 items</span>
+</div>
+<div class="cart-items" id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-total-row">
+<span>Total</span>
+<strong id="cartTotal">&#8377;0.00</strong>
+</div>
+<button class="cart-checkout" id="checkoutBtn" disabled>Checkout</button>
+</div>
+</aside>
+</div>
+</div>
+<div class="pass-overlay" id="passOverlay">
+<div class="pass-dialog">
+<h2>Admin Access</h2>
+<p>Hold Ready for 5 seconds then enter PIN.</p>
+<div class="pass-display" id="passDisplay">••••••</div>
+<div class="keypad" id="passKeypad">
+<button class="pass-key" data-key="1">1</button>
+<button class="pass-key" data-key="2">2</button>
+<button class="pass-key" data-key="3">3</button>
+<button class="pass-key" data-key="4">4</button>
+<button class="pass-key" data-key="5">5</button>
+<button class="pass-key" data-key="6">6</button>
+<button class="pass-key" data-key="7">7</button>
+<button class="pass-key" data-key="8">8</button>
+<button class="pass-key" data-key="9">9</button>
+<button class="pass-key action" data-action="clear">Clear</button>
+<button class="pass-key" data-key="0">0</button>
+<button class="pass-key action" data-action="back">⌫</button>
+</div>
+<div class="pass-error" id="passError"></div>
+<div class="pass-actions">
+<button id="passCancelBtn" class="secondary-btn">Cancel</button>
+<button id="passSubmitBtn" class="primary-btn">Enter</button>
+</div>
+</div>
+</div>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

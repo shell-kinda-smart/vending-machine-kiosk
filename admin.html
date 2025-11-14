@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vellnify Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+<header class="admin-header">
+<div>
+<h1>Vellnify Admin</h1>
+<p>Inventory &amp; Settings</p>
+</div>
+<button id="exitBtn" class="ghost-btn">Exit Kiosk</button>
+</header>
+<main class="admin-content">
+<section class="panel inventory-panel">
+<div class="panel-header">
+<h2>Products</h2>
+<button id="addProductBtn" class="ghost-btn">Add Product</button>
+</div>
+<div class="products-editor" id="productsEditor"></div>
+<button id="saveProductsBtn" class="primary-btn full">Save Changes</button>
+</section>
+<section class="panel settings-panel">
+<h2>Security</h2>
+<div class="setting-block">
+<label for="newPinInput">Update PIN</label>
+<input type="password" id="newPinInput" placeholder="New 6-digit PIN" data-keyboard="numeric" readonly>
+<input type="password" id="confirmPinInput" placeholder="Confirm PIN" data-keyboard="numeric" readonly>
+<button id="updatePinBtn" class="primary-btn full">Update PIN</button>
+<div class="setting-hint" id="pinMessage"></div>
+</div>
+</section>
+</main>
+</div>
+
+<div class="admin-pass-overlay" id="adminPassOverlay">
+<div class="pass-dialog">
+<h2>Admin PIN</h2>
+<p>Enter the kiosk PIN to continue</p>
+<div class="pass-display" id="adminPassDisplay">••••••</div>
+<div class="keypad" id="adminPassKeypad">
+<button data-key="1">1</button>
+<button data-key="2">2</button>
+<button data-key="3">3</button>
+<button data-key="4">4</button>
+<button data-key="5">5</button>
+<button data-key="6">6</button>
+<button data-key="7">7</button>
+<button data-key="8">8</button>
+<button data-key="9">9</button>
+<button data-action="clear">Clear</button>
+<button data-key="0">0</button>
+<button data-action="back">⌫</button>
+</div>
+<div class="pass-error" id="adminPassError"></div>
+<div class="pass-actions">
+<button id="adminPassSubmit" class="primary-btn full">Unlock</button>
+</div>
+</div>
+</div>
+
+<div class="osk" id="osk">
+<div class="osk-header">
+<span id="oskLabel">Keyboard</span>
+<button id="oskClose" class="ghost-btn small">Close</button>
+</div>
+<div class="osk-keys" id="oskKeys"></div>
+</div>
+
+<script src="assets/js/admin.js" defer></script>
+</body>
+</html>
