@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -28,9 +28,43 @@
 <button id="saveProductsBtn" class="primary-btn full">Save Changes</button>
 </section>
 <section class="panel settings-panel">
-<h2>Security</h2>
 <div class="setting-block">
-<label for="newPinInput">Update PIN</label>
+<h2>Machine Status</h2>
+<div class="status-options" id="statusOptions"></div>
+</div>
+<div class="setting-block">
+<h3>Theme Colors</h3>
+<div class="theme-grid">
+<div class="theme-cell">
+<label for="themePrimary">Primary</label>
+<input type="color" id="themePrimary">
+</div>
+<div class="theme-cell">
+<label for="themeAccent">Accent</label>
+<input type="color" id="themeAccent">
+</div>
+<div class="theme-cell">
+<label for="themeBgTop">Background Top</label>
+<input type="color" id="themeBgTop">
+</div>
+<div class="theme-cell">
+<label for="themeBgBottom">Background Bottom</label>
+<input type="color" id="themeBgBottom">
+</div>
+</div>
+</div>
+<div class="setting-block">
+<div class="panel-header small">
+<h3>Categories</h3>
+<button id="addCategoryBtn" class="ghost-btn small">Add</button>
+</div>
+<div class="categories-editor" id="categoriesEditor"></div>
+</div>
+<button id="saveConfigBtn" class="primary-btn full">Save Settings</button>
+<div class="setting-hint" id="configMessage"></div>
+</div>
+<div class="setting-block">
+<h3>Security</h3>
 <input type="password" id="newPinInput" placeholder="New 6-digit PIN" data-keyboard="numeric" readonly>
 <input type="password" id="confirmPinInput" placeholder="Confirm PIN" data-keyboard="numeric" readonly>
 <button id="updatePinBtn" class="primary-btn full">Update PIN</button>
@@ -44,7 +78,7 @@
 <div class="pass-dialog">
 <h2>Admin PIN</h2>
 <p>Enter the kiosk PIN to continue</p>
-<div class="pass-display" id="adminPassDisplay">••••••</div>
+        <div class="pass-display" id="adminPassDisplay">&bull;&bull;&bull;&bull;&bull;&bull;</div>
 <div class="keypad" id="adminPassKeypad">
 <button data-key="1">1</button>
 <button data-key="2">2</button>
@@ -57,7 +91,7 @@
 <button data-key="9">9</button>
 <button data-action="clear">Clear</button>
 <button data-key="0">0</button>
-<button data-action="back">⌫</button>
+<button data-action="back">?</button>
 </div>
 <div class="pass-error" id="adminPassError"></div>
 <div class="pass-actions">

@@ -33,21 +33,21 @@ body {
 
 .app-shell {
   height: 100%;
-  max-width: 1240px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .header {
-  height: 64px;
-  border-radius: 18px;
+  height: 58px;
+  border-radius: 14px;
   background: var(--panel);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
-  padding: 0 20px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,11 +95,55 @@ body {
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
 }
 
+.status-pill.status-maintenance {
+  background: rgba(250, 204, 21, 0.2);
+  border-color: rgba(250, 204, 21, 0.4);
+  color: #92400e;
+}
+
+.status-pill.status-maintenance::before {
+  background: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.8);
+}
+
+.status-pill.status-out_of_service {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #b91c1c;
+}
+
+.status-pill.status-out_of_service::before {
+  background: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+}
+
+.status-pill.status-maintenance {
+  background: rgba(250, 204, 21, 0.2);
+  border-color: rgba(250, 204, 21, 0.4);
+  color: #92400e;
+}
+
+.status-pill.status-maintenance::before {
+  background: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+}
+
+.status-pill.status-out_of_service {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #b91c1c;
+}
+
+.status-pill.status-out_of_service::before {
+  background: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+}
+
 .content {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
-  gap: 16px;
+  grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+  gap: 12px;
   min-height: 0;
 }
 
@@ -111,7 +155,51 @@ body {
   background: var(--panel);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
-  padding: 16px;
+  padding: 12px;
+}
+
+.status-banner {
+  display: none;
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  background: rgba(250, 204, 21, 0.2);
+  color: #92400e;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.status-banner.visible {
+  display: block;
+}
+
+.status-banner.out-of-service {
+  border-color: rgba(248, 113, 113, 0.4);
+  background: rgba(248, 113, 113, 0.2);
+  color: #b91c1c;
+}
+
+.status-banner {
+  display: none;
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  background: rgba(250, 204, 21, 0.2);
+  color: #92400e;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.status-banner.visible {
+  display: block;
+}
+
+.status-banner.out-of-service {
+  border-color: rgba(248, 113, 113, 0.6);
+  background: rgba(248, 113, 113, 0.2);
+  color: #b91c1c;
 }
 
 .toolbar {
@@ -151,19 +239,19 @@ body {
   flex: 1;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
   padding-right: 4px;
 }
 
 .product-card {
   border-radius: 16px;
   border: 1px solid var(--border);
-  padding: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 185px;
+  min-height: 175px;
   background: linear-gradient(180deg, var(--panel-soft), #fff);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -458,6 +546,36 @@ body {
 
 .splash .spinner {
   margin-top: 10px;
+}
+
+.status-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.96);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 45;
+  text-align: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+
+.status-overlay.visible {
+  display: flex;
+}
+
+.status-overlay h1 {
+  font-size: 2.4rem;
+  margin: 0;
+  color: #b91c1c;
+}
+
+.status-overlay p {
+  font-size: 1rem;
+  color: var(--muted);
+}
 
 .pass-overlay {
   position: fixed;
@@ -549,6 +667,20 @@ body {
 @media (max-width: 1100px) {
   .product-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-panel {
+    min-height: 280px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

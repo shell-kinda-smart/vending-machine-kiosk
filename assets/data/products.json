@@ -4,778 +4,349 @@
     "title": "Citrus Spark",
     "category": "Drinks",
     "price": 2.78,
-    "stock": 19,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "caffeine",
-      "citrus",
-      "sparkling"
-    ],
-    "popularity": 84
+    "stock": 19
   },
   {
     "id": "prod-002",
     "title": "Midnight Cola",
     "category": "Drinks",
     "price": 3.38,
-    "stock": 13,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "low sugar",
-      "botanical"
-    ],
-    "popularity": 82
+    "stock": 13
   },
   {
     "id": "prod-003",
     "title": "Tidal Seltzer",
     "category": "Drinks",
     "price": 2.11,
-    "stock": 21,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "sparkling",
-      "botanical"
-    ],
-    "popularity": 75
+    "stock": 21
   },
   {
     "id": "prod-004",
     "title": "Emerald Matcha",
     "category": "Drinks",
     "price": 2.16,
-    "stock": 17,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "botanical",
-      "citrus",
-      "hydrating"
-    ],
-    "popularity": 71
+    "stock": 17
   },
   {
     "id": "prod-005",
     "title": "Berry Fuel",
     "category": "Drinks",
     "price": 3.51,
-    "stock": 21,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "citrus",
-      "refuel"
-    ],
-    "popularity": 87
+    "stock": 21
   },
   {
     "id": "prod-006",
     "title": "Nitro Cold Brew",
     "category": "Drinks",
     "price": 4.32,
-    "stock": 22,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "low sugar",
-      "hydrating"
-    ],
-    "popularity": 90
+    "stock": 22
   },
   {
     "id": "prod-007",
     "title": "Lychee Mist",
     "category": "Drinks",
     "price": 4.67,
-    "stock": 21,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "refuel",
-      "low sugar",
-      "hydrating"
-    ],
-    "popularity": 97
+    "stock": 21
   },
   {
     "id": "prod-008",
     "title": "Solar Lemonade",
     "category": "Drinks",
     "price": 2.57,
-    "stock": 21,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "hydrating",
-      "citrus",
-      "refuel"
-    ],
-    "popularity": 86
+    "stock": 21
   },
   {
     "id": "prod-009",
     "title": "Nightshift Espresso",
     "category": "Drinks",
     "price": 3.04,
-    "stock": 10,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "botanical",
-      "refuel"
-    ],
-    "popularity": 96
+    "stock": 10
   },
   {
     "id": "prod-010",
     "title": "Tropical Fizz",
     "category": "Drinks",
     "price": 3.16,
-    "stock": 20,
-    "emoji": "🥤",
-    "temperature": "Chilled",
-    "swatch": "linear-gradient(135deg,#dbeafe,#e0e7ff)",
-    "tags": [
-      "refuel",
-      "sparkling",
-      "hydrating"
-    ],
-    "popularity": 94
+    "stock": 20
   },
   {
     "id": "prod-011",
     "title": "Sea Salt Crisps",
     "category": "Snacks",
     "price": 1.58,
-    "stock": 30,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "protein",
-      "baked"
-    ],
-    "popularity": 83
+    "stock": 30
   },
   {
     "id": "prod-012",
     "title": "Choco Burst Bar",
     "category": "Snacks",
     "price": 1.39,
-    "stock": 16,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "share pack",
-      "baked"
-    ],
-    "popularity": 72
+    "stock": 16
   },
   {
     "id": "prod-013",
     "title": "Protein Crunch",
     "category": "Snacks",
     "price": 3.22,
-    "stock": 15,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "sweet",
-      "protein"
-    ],
-    "popularity": 68
+    "stock": 15
   },
   {
     "id": "prod-014",
     "title": "Wasabi Trail Mix",
     "category": "Snacks",
     "price": 3.12,
-    "stock": 29,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "vegan",
-      "savory"
-    ],
-    "popularity": 87
+    "stock": 29
   },
   {
     "id": "prod-015",
     "title": "Sriracha Bites",
     "category": "Snacks",
     "price": 1.49,
-    "stock": 31,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "vegan",
-      "crunchy",
-      "baked"
-    ],
-    "popularity": 81
+    "stock": 31
   },
   {
     "id": "prod-016",
     "title": "Honey Granola",
     "category": "Snacks",
     "price": 1.53,
-    "stock": 27,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "crunchy",
-      "savory",
-      "share pack"
-    ],
-    "popularity": 69
+    "stock": 27
   },
   {
     "id": "prod-017",
     "title": "Maple Pretzel Knots",
     "category": "Snacks",
     "price": 2.45,
-    "stock": 26,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "savory",
-      "baked"
-    ],
-    "popularity": 83
+    "stock": 26
   },
   {
     "id": "prod-018",
     "title": "Cheddar Pop Cubes",
     "category": "Snacks",
     "price": 1.37,
-    "stock": 30,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "sweet",
-      "vegan"
-    ],
-    "popularity": 67
+    "stock": 30
   },
   {
     "id": "prod-019",
     "title": "Velvet Brownie",
     "category": "Snacks",
     "price": 2.71,
-    "stock": 29,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "crunchy",
-      "protein"
-    ],
-    "popularity": 70
+    "stock": 29
   },
   {
     "id": "prod-020",
     "title": "Coconut Chips",
     "category": "Snacks",
     "price": 2.91,
-    "stock": 21,
-    "emoji": "🍫",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef3c7,#fde68a)",
-    "tags": [
-      "baked",
-      "share pack",
-      "vegan"
-    ],
-    "popularity": 90
+    "stock": 21
   },
   {
     "id": "prod-021",
     "title": "Garden Quinoa Bowl",
     "category": "Fresh Bowls",
     "price": 3.88,
-    "stock": 20,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "hearty",
-      "protein",
-      "gluten-free"
-    ],
-    "popularity": 69
+    "stock": 20
   },
   {
     "id": "prod-022",
     "title": "Mediterran Pasta Cup",
     "category": "Fresh Bowls",
     "price": 5.11,
-    "stock": 13,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "vegan",
-      "fiber",
-      "gluten-free"
-    ],
-    "popularity": 61
+    "stock": 13
   },
   {
     "id": "prod-023",
     "title": "Spicy Chickpea Cup",
     "category": "Fresh Bowls",
     "price": 4.91,
-    "stock": 9,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "hearty",
-      "protein",
-      "seasonal"
-    ],
-    "popularity": 82
+    "stock": 9
   },
   {
     "id": "prod-024",
     "title": "Rainbow Fruit Medley",
     "category": "Fresh Bowls",
     "price": 5.35,
-    "stock": 11,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "vegan",
-      "hearty",
-      "protein"
-    ],
-    "popularity": 64
+    "stock": 11
   },
   {
     "id": "prod-025",
     "title": "Sesame Noodle Pot",
     "category": "Fresh Bowls",
     "price": 4.39,
-    "stock": 13,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "protein",
-      "vegan",
-      "gluten-free"
-    ],
-    "popularity": 67
+    "stock": 13
   },
   {
     "id": "prod-026",
     "title": "Citrus Kale Salad",
     "category": "Fresh Bowls",
     "price": 3.36,
-    "stock": 9,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "seasonal",
-      "gluten-free"
-    ],
-    "popularity": 86
+    "stock": 9
   },
   {
     "id": "prod-027",
     "title": "Mango Chia Parfait",
     "category": "Fresh Bowls",
     "price": 4.81,
-    "stock": 19,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "hearty",
-      "gluten-free",
-      "protein"
-    ],
-    "popularity": 75
+    "stock": 19
   },
   {
     "id": "prod-028",
     "title": "Basil Caprese Box",
     "category": "Fresh Bowls",
     "price": 5.12,
-    "stock": 15,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "hearty",
-      "grab & go"
-    ],
-    "popularity": 84
+    "stock": 15
   },
   {
     "id": "prod-029",
     "title": "Southwest Corn Cup",
     "category": "Fresh Bowls",
     "price": 3.99,
-    "stock": 6,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "grab & go",
-      "hearty",
-      "fiber"
-    ],
-    "popularity": 84
+    "stock": 6
   },
   {
     "id": "prod-030",
     "title": "Berry Yogurt Crunch",
     "category": "Fresh Bowls",
     "price": 3.55,
-    "stock": 8,
-    "emoji": "🥗",
-    "temperature": "Fresh",
-    "swatch": "linear-gradient(135deg,#dcfce7,#bbf7d0)",
-    "tags": [
-      "fiber",
-      "gluten-free"
-    ],
-    "popularity": 64
+    "stock": 8
   },
   {
     "id": "prod-031",
     "title": "Hydration Boost",
     "category": "Wellness",
     "price": 3.38,
-    "stock": 8,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "rest",
-      "energy"
-    ],
-    "popularity": 56
+    "stock": 8
   },
   {
     "id": "prod-032",
     "title": "Electrolyte Pods",
     "category": "Wellness",
     "price": 3.46,
-    "stock": 12,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "detox",
-      "rest",
-      "immunity"
-    ],
-    "popularity": 81
+    "stock": 12
   },
   {
     "id": "prod-033",
     "title": "Collagen Jelly",
     "category": "Wellness",
     "price": 2.14,
-    "stock": 17,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "immunity",
-      "calm"
-    ],
-    "popularity": 85
+    "stock": 17
   },
   {
     "id": "prod-034",
     "title": "Immunity Shots Pack",
     "category": "Wellness",
     "price": 3.33,
-    "stock": 21,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "calm",
-      "detox",
-      "focus"
-    ],
-    "popularity": 69
+    "stock": 21
   },
   {
     "id": "prod-035",
     "title": "Calm Focus Gummies",
     "category": "Wellness",
     "price": 5.19,
-    "stock": 19,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "calm",
-      "detox"
-    ],
-    "popularity": 55
+    "stock": 19
   },
   {
     "id": "prod-036",
     "title": "Daily Vitamin Pack",
     "category": "Wellness",
     "price": 2.49,
-    "stock": 21,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "energy",
-      "detox"
-    ],
-    "popularity": 60
+    "stock": 21
   },
   {
     "id": "prod-037",
     "title": "Energy Chews",
     "category": "Wellness",
     "price": 4.82,
-    "stock": 21,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "daily",
-      "rest",
-      "immunity"
-    ],
-    "popularity": 62
+    "stock": 21
   },
   {
     "id": "prod-038",
     "title": "Detox Charcoal Water",
     "category": "Wellness",
     "price": 2.79,
-    "stock": 8,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "focus",
-      "daily"
-    ],
-    "popularity": 84
+    "stock": 8
   },
   {
     "id": "prod-039",
     "title": "Protein Builder Shake",
     "category": "Wellness",
     "price": 3.19,
-    "stock": 24,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "detox",
-      "rest",
-      "immunity"
-    ],
-    "popularity": 55
+    "stock": 24
   },
   {
     "id": "prod-040",
     "title": "Sleep Drift Tea",
     "category": "Wellness",
     "price": 3.15,
-    "stock": 21,
-    "emoji": "🧘",
-    "temperature": "Ambient",
-    "swatch": "linear-gradient(135deg,#fef9c3,#fbcfe8)",
-    "tags": [
-      "immunity",
-      "focus",
-      "rest"
-    ],
-    "popularity": 84
+    "stock": 21
   },
   {
     "id": "prod-041",
     "title": "Butter Paneer Bowl",
     "category": "Smart Meals",
     "price": 7.37,
-    "stock": 9,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "hearty",
-      "comfort",
-      "protein"
-    ],
-    "popularity": 76
+    "stock": 9
   },
   {
     "id": "prod-042",
     "title": "Teriyaki Protein Bento",
     "category": "Smart Meals",
     "price": 6.33,
-    "stock": 11,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "protein",
-      "fusion",
-      "chef-made"
-    ],
-    "popularity": 80
+    "stock": 11
   },
   {
     "id": "prod-043",
     "title": "BBQ Jackfruit Kit",
     "category": "Smart Meals",
     "price": 3.63,
-    "stock": 10,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "fusion",
-      "spicy",
-      "hearty"
-    ],
-    "popularity": 95
+    "stock": 10
   },
   {
     "id": "prod-044",
     "title": "Chipotle Burrito Roll",
     "category": "Smart Meals",
     "price": 5.22,
-    "stock": 8,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "hearty",
-      "protein",
-      "chef-made"
-    ],
-    "popularity": 79
+    "stock": 8
   },
   {
     "id": "prod-045",
     "title": "Thai Basil Rice",
     "category": "Smart Meals",
     "price": 6.71,
-    "stock": 17,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "fusion",
-      "chef-made",
-      "spicy"
-    ],
-    "popularity": 79
+    "stock": 17
   },
   {
     "id": "prod-046",
     "title": "Miso Ramen Cup",
     "category": "Smart Meals",
     "price": 4.04,
-    "stock": 14,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "limited",
-      "hearty",
-      "fusion"
-    ],
-    "popularity": 81
+    "stock": 14
   },
   {
     "id": "prod-047",
     "title": "Pesto Pasta Twist",
     "category": "Smart Meals",
     "price": 3.53,
-    "stock": 10,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "chef-made",
-      "spicy",
-      "hearty"
-    ],
-    "popularity": 77
+    "stock": 10
   },
   {
     "id": "prod-048",
     "title": "Smoky Kebab Wrap",
     "category": "Smart Meals",
     "price": 5.92,
-    "stock": 12,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "fusion",
-      "chef-made",
-      "spicy"
-    ],
-    "popularity": 66
+    "stock": 12
   },
   {
     "id": "prod-049",
     "title": "Classic Veg Sandwich",
     "category": "Smart Meals",
     "price": 6.25,
-    "stock": 14,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "limited",
-      "spicy"
-    ],
-    "popularity": 69
+    "stock": 14
   },
   {
     "id": "prod-050",
     "title": "Paneer Tikka Wrap",
     "category": "Smart Meals",
     "price": 6.13,
-    "stock": 13,
-    "emoji": "🍱",
-    "temperature": "Heated",
-    "swatch": "linear-gradient(135deg,#fee2e2,#fecaca)",
-    "tags": [
-      "protein",
-      "fusion",
-      "chef-made"
-    ],
-    "popularity": 77
+    "stock": 13
   }
 ]

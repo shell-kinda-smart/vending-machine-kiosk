@@ -1,0 +1,16 @@
+{
+  "status": "live",
+  "categories": [
+    "Drinks",
+    "Snacks",
+    "Fresh Bowls",
+    "Smart Meals",
+    "Wellness"
+  ],
+  "theme": {
+    "primary": "#6366f1",
+    "accent": "#0ea5e9",
+    "backgroundTop": "#f5f8ff",
+    "backgroundBottom": "#eef2fb"
+  }
+}

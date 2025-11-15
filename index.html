@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -25,6 +25,7 @@
 </header>
 <div class="content">
 <section class="products-panel">
+<div id="statusBanner" class="status-banner" role="status"></div>
 <div class="toolbar">
 <div class="categories" id="categoryFilters"></div>
 </div>
@@ -49,11 +50,15 @@
 </aside>
 </div>
 </div>
+<div class="status-overlay" id="statusOverlay">
+<h1>Out of service</h1>
+<p>Please contact support.</p>
+</div>
 <div class="pass-overlay" id="passOverlay">
 <div class="pass-dialog">
 <h2>Admin Access</h2>
-<p>Hold Ready for 5 seconds then enter PIN.</p>
-<div class="pass-display" id="passDisplay">••••••</div>
+<p>Tap the Ready badge 10 times to enter PIN.</p>
+ <div class="pass-display" id="passDisplay">&bull;&bull;&bull;&bull;&bull;&bull;</div>
 <div class="keypad" id="passKeypad">
 <button class="pass-key" data-key="1">1</button>
 <button class="pass-key" data-key="2">2</button>
@@ -66,7 +71,7 @@
 <button class="pass-key" data-key="9">9</button>
 <button class="pass-key action" data-action="clear">Clear</button>
 <button class="pass-key" data-key="0">0</button>
-<button class="pass-key action" data-action="back">⌫</button>
+<button class="pass-key action" data-action="back">âŒ«</button>
 </div>
 <div class="pass-error" id="passError"></div>
 <div class="pass-actions">

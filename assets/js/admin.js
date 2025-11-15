@@ -1,19 +1,37 @@
 const AdminApp = (() => {
   let pin = sessionStorage.getItem('adminPass') || '';
   let products = [];
+  let config = {
+    status: 'live',
+    categories: [],
+    theme: {},
+  };
   let activeInput = null;
+  let pinBuffer = '';
+  const themeInputs = {
+    primary: null,
+    accent: null,
+    backgroundTop: null,
+    backgroundBottom: null,
+  };
 
   const alphaLayout = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'SPACE', 'BACK']
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'SPACE', 'BACK'],
   ];
 
   const numericLayout = [
     ['1', '2', '3'],
     ['4', '5', '6'],
     ['7', '8', '9'],
-    ['.', '0', 'BACK']
+    ['.', '0', 'BACK'],
+  ];
+
+  const STATUSES = [
+    { value: 'live', label: 'Live' },
+    { value: 'maintenance', label: 'Maintenance' },
+    { value: 'out_of_service', label: 'Out of Service' },
   ];
 
   function init() {
@@ -22,7 +40,7 @@ const AdminApp = (() => {
       verifyPin(pin)
         .then(() => {
           hidePinOverlay();
-          loadProducts();
+          loadData();
         })
         .catch(() => showPinOverlay());
     } else {
@@ -36,21 +54,37 @@ const AdminApp = (() => {
       window.location.href = '/';
     });
 
+    themeInputs.primary = document.getElementById('themePrimary');
+    themeInputs.accent = document.getElementById('themeAccent');
+    themeInputs.backgroundTop = document.getElementById('themeBgTop');
+    themeInputs.backgroundBottom = document.getElementById('themeBgBottom');
+
     document.getElementById('addProductBtn').addEventListener('click', addProductRow);
     document.getElementById('saveProductsBtn').addEventListener('click', saveProducts);
+    document.getElementById('addCategoryBtn').addEventListener('click', addCategoryRow);
+    document.getElementById('saveConfigBtn').addEventListener('click', saveConfig);
     document.getElementById('updatePinBtn').addEventListener('click', updatePin);
+    ['newPinInput', 'confirmPinInput'].forEach((id) => {
+      const input = document.getElementById(id);
+      input.addEventListener('focus', () => openKeyboard(input));
+      input.addEventListener('click', () => openKeyboard(input));
+    });
 
     document.getElementById('adminPassKeypad').addEventListener('click', handleOverlayKey);
     document.getElementById('adminPassSubmit').addEventListener('click', submitOverlayPin);
-
     document.getElementById('oskClose').addEventListener('click', () => toggleKeyboard(false));
+
+    Object.entries(themeInputs).forEach(([key, el]) => {
+      if (!el) return;
+      el.addEventListener('input', () => handleThemeInput(key, el.value));
+    });
   }
 
   function verifyPin(inputPin) {
     return fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pass: inputPin })
+      body: JSON.stringify({ pass: inputPin }),
     }).then((res) => {
       if (!res.ok) throw new Error('Invalid PIN');
       return res.json();
@@ -58,7 +92,8 @@ const AdminApp = (() => {
   }
 
   function showPinOverlay() {
-    document.getElementById('adminPassDisplay').textContent = '••••••';
+    pinBuffer = '';
+    updateOverlayDisplay();
     document.getElementById('adminPassError').textContent = '';
     document.getElementById('adminPassOverlay').classList.remove('hidden');
   }
@@ -67,7 +102,6 @@ const AdminApp = (() => {
     document.getElementById('adminPassOverlay').classList.add('hidden');
   }
 
-  let pinBuffer = '';
   function handleOverlayKey(event) {
     const { key, action } = event.target.dataset;
     if (!key && !action) return;
@@ -83,7 +117,7 @@ const AdminApp = (() => {
   }
 
   function updateOverlayDisplay() {
-    const masked = pinBuffer.padEnd(6, '•');
+    const masked = pinBuffer.padEnd(6, '\u2022');
     document.getElementById('adminPassDisplay').textContent = masked;
   }
 
@@ -95,7 +129,7 @@ const AdminApp = (() => {
         sessionStorage.setItem('adminPass', pin);
         pinBuffer = '';
         hidePinOverlay();
-        loadProducts();
+        loadData();
       })
       .catch(() => {
         document.getElementById('adminPassError').textContent = 'Incorrect PIN';
@@ -104,16 +138,29 @@ const AdminApp = (() => {
       });
   }
 
-  function loadProducts() {
-    fetch('/api/products')
-      .then((res) => res.json())
-      .then((data) => {
-        products = data;
-        renderProducts();
+  function loadData() {
+    Promise.all([fetch('/api/products'), fetch('/api/config')])
+      .then(([prodRes, configRes]) => Promise.all([prodRes.json(), configRes.json()]))
+      .then(([prodData, configData]) => {
+        products = prodData;
+        config = {
+          status: configData.status || 'live',
+          categories: configData.categories || [],
+          theme: configData.theme || {},
+        };
+        renderAll();
       })
       .catch((err) => {
-        console.error(err);
+        console.error('Unable to load admin data', err);
+        alert('Unable to load data');
       });
+  }
+
+  function renderAll() {
+    renderProducts();
+    renderCategories();
+    renderStatusOptions();
+    renderThemeControls();
   }
 
   function renderProducts() {
@@ -124,10 +171,10 @@ const AdminApp = (() => {
       row.className = 'product-row';
       row.dataset.index = index;
       row.innerHTML = `
-        <input type="text" value="${product.title}" data-field="title" data-keyboard="alpha" readonly>
-        <input type="text" value="${product.category}" data-field="category" data-keyboard="alpha" readonly>
-        <input type="text" value="${product.price}" data-field="price" data-keyboard="numeric" readonly>
-        <input type="text" value="${product.stock}" data-field="stock" data-keyboard="numeric" readonly>
+        ${renderField('Title', `<input type="text" value="${product.title}" data-field="title" data-keyboard="alpha" readonly>`, index)}
+        ${renderField('Category', renderCategorySelect(product.category, index), index)}
+        ${renderField('Price', `<input type="text" value="${product.price}" data-field="price" data-keyboard="numeric" readonly>`, index)}
+        ${renderField('Stock', `<input type="text" value="${product.stock}" data-field="stock" data-keyboard="numeric" readonly>`, index)}
         <button type="button" data-action="remove">Remove</button>
       `;
       row.addEventListener('click', (event) => {
@@ -137,21 +184,38 @@ const AdminApp = (() => {
       });
       row.querySelectorAll('input').forEach((input) => {
         input.addEventListener('focus', () => openKeyboard(input));
+        input.addEventListener('click', () => openKeyboard(input));
       });
+      const select = row.querySelector('select');
+      if (select) {
+        select.addEventListener('change', () => {
+          products[index].category = select.value;
+        });
+      }
       editor.appendChild(row);
     });
   }
 
+  function renderCategorySelect(selected, index) {
+    const cats = Array.from(new Set([...(config.categories || []), selected].filter(Boolean)));
+    const options = cats.map((cat) => `<option value="${cat}" ${cat === selected ? 'selected' : ''}>${cat}</option>`).join('');
+    return `
+      <select data-field="category" data-index="${index}">
+        ${options}
+      </select>
+    `;
+  }
+
   function addProductRow() {
-    const newProduct = {
-      id: `prod-${Date.now()}`,
+    const defaultCategory = config.categories[0] || 'General';
+    const id = `prod-${Date.now()}`;
+    products.push({
+      id,
       title: 'New Product',
-      category: 'Misc',
+      category: defaultCategory,
       price: 0,
       stock: 0,
-      tags: []
-    };
-    products.push(newProduct);
+    });
     renderProducts();
   }
 
@@ -165,15 +229,113 @@ const AdminApp = (() => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Admin-Pass': pin
+        'X-Admin-Pass': pin,
       },
-      body: JSON.stringify({ products })
+      body: JSON.stringify({ products }),
     })
       .then((res) => {
         if (!res.ok) throw new Error('Save failed');
         alert('Products updated');
       })
       .catch(() => alert('Unable to save products'));
+  }
+
+  function renderCategories() {
+    const container = document.getElementById('categoriesEditor');
+    if (!Array.isArray(config.categories)) config.categories = [];
+    container.innerHTML = '';
+    if (!config.categories || !config.categories.length) {
+      const hint = document.createElement('div');
+      hint.className = 'setting-hint';
+      hint.textContent = 'No categories yet. Add one to begin.';
+      container.appendChild(hint);
+      return;
+    }
+    config.categories.forEach((cat, index) => {
+      const row = document.createElement('div');
+      row.className = 'category-row';
+      row.innerHTML = `
+        <input type="text" value="${cat}" data-cat-index="${index}" data-keyboard="alpha" readonly>
+        <button type="button" data-index="${index}">Remove</button>
+      `;
+      const input = row.querySelector('input');
+      input.addEventListener('focus', () => openKeyboard(input));
+      input.addEventListener('click', () => openKeyboard(input));
+      row.querySelector('button').addEventListener('click', () => removeCategory(index));
+      container.appendChild(row);
+    });
+  }
+
+  function addCategoryRow() {
+    config.categories.push('New Category');
+    renderCategories();
+    renderProducts();
+    setTimeout(() => {
+      const inputs = document.querySelectorAll('[data-cat-index]');
+      const target = inputs[inputs.length - 1];
+      if (target) {
+        target.focus();
+        openKeyboard(target);
+      }
+    }, 0);
+  }
+
+  function removeCategory(index) {
+    config.categories.splice(index, 1);
+    if (!config.categories.length) {
+      config.categories.push('General');
+    }
+    renderCategories();
+    renderProducts();
+  }
+
+  function renderStatusOptions() {
+    const wrapper = document.getElementById('statusOptions');
+    wrapper.innerHTML = '';
+    STATUSES.forEach((status) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = status.label;
+      btn.className = `status-btn${config.status === status.value ? ' active' : ''}`;
+      btn.addEventListener('click', () => {
+        config.status = status.value;
+        renderStatusOptions();
+      });
+      wrapper.appendChild(btn);
+    });
+  }
+
+  function saveConfig() {
+    const message = document.getElementById('configMessage');
+    const trimmed = (config.categories || []).map((cat) => cat.trim()).filter((cat) => cat);
+    if (!trimmed.length) {
+      message.textContent = 'Need at least one category.';
+      return;
+    }
+    const deduped = Array.from(new Set(trimmed));
+    fetch('/api/config', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Pass': pin,
+      },
+      body: JSON.stringify({
+        status: config.status,
+        categories: deduped,
+        theme: config.theme || {},
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed');
+        config.categories = deduped;
+        message.textContent = 'Configuration saved.';
+        renderStatusOptions();
+        renderProducts();
+        renderThemeControls();
+      })
+      .catch(() => {
+        message.textContent = 'Unable to save config.';
+      });
   }
 
   function updatePin() {
@@ -188,9 +350,9 @@ const AdminApp = (() => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Admin-Pass': pin
+        'X-Admin-Pass': pin,
       },
-      body: JSON.stringify({ newPass: newPin })
+      body: JSON.stringify({ newPass: newPin }),
     })
       .then((res) => {
         if (!res.ok) throw new Error('Failed');
@@ -209,8 +371,8 @@ const AdminApp = (() => {
     activeInput = input;
     const mode = input.dataset.keyboard || 'alpha';
     renderKeyboard(mode);
-    toggleKeyboard(true);
     document.getElementById('oskLabel').textContent = mode === 'numeric' ? 'Numeric Pad' : 'Keyboard';
+    document.getElementById('osk').classList.add('visible');
   }
 
   function renderKeyboard(mode) {
@@ -230,19 +392,17 @@ const AdminApp = (() => {
           btn.textContent = key;
           btn.dataset.key = key;
         }
-        if (key === 'SPACE' || key === 'BACK') {
-          btn.classList.add('action');
-        }
+        if (key === 'SPACE' || key === 'BACK') btn.classList.add('action');
         btn.addEventListener('click', () => handleKeyboardKey(btn.dataset));
         keysContainer.appendChild(btn);
       });
     });
-    const extra = document.createElement('button');
-    extra.textContent = 'Clear';
-    extra.classList.add('action');
-    extra.dataset.action = 'clear';
-    extra.addEventListener('click', () => handleKeyboardKey(extra.dataset));
-    keysContainer.appendChild(extra);
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear';
+    clearBtn.classList.add('action');
+    clearBtn.dataset.action = 'clear';
+    clearBtn.addEventListener('click', () => handleKeyboardKey(clearBtn.dataset));
+    keysContainer.appendChild(clearBtn);
   }
 
   function handleKeyboardKey(dataset) {
@@ -262,10 +422,15 @@ const AdminApp = (() => {
   }
 
   function syncInputValue(input) {
+    const field = input.dataset.field;
+    const catIndex = input.dataset.catIndex;
+    if (typeof catIndex !== 'undefined') {
+      config.categories[Number(catIndex)] = input.value;
+      return;
+    }
     const row = input.closest('.product-row');
     if (!row) return;
     const index = Number(row.dataset.index);
-    const field = input.dataset.field;
     if (field === 'price' || field === 'stock') {
       const numericValue = Number(input.value) || 0;
       products[index][field] = numericValue;
@@ -282,6 +447,30 @@ const AdminApp = (() => {
       osk.classList.remove('visible');
       activeInput = null;
     }
+  }
+
+  function renderField(label, control) {
+    return `<div class="product-field"><label>${label}</label>${control}</div>`;
+  }
+
+  function renderThemeControls() {
+    if (!config.theme) config.theme = {};
+    config.theme = {
+      primary: config.theme.primary || '#6366f1',
+      accent: config.theme.accent || '#0ea5e9',
+      backgroundTop: config.theme.backgroundTop || '#f5f8ff',
+      backgroundBottom: config.theme.backgroundBottom || '#eef2fb',
+    };
+    if (themeInputs.primary) themeInputs.primary.value = config.theme.primary || '#6366f1';
+    if (themeInputs.accent) themeInputs.accent.value = config.theme.accent || '#0ea5e9';
+    if (themeInputs.backgroundTop) themeInputs.backgroundTop.value = config.theme.backgroundTop || '#f5f8ff';
+    if (themeInputs.backgroundBottom) themeInputs.backgroundBottom.value = config.theme.backgroundBottom || '#eef2fb';
+  }
+
+  function handleThemeInput(key, value) {
+    if (!config.theme) config.theme = {};
+    if (!value) return;
+    config.theme[key] = value;
   }
 
   return { init };

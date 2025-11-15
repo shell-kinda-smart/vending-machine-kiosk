@@ -1,6 +1,22 @@
+const STATUS_META = {
+  live: { label: 'Live', className: 'status-live', banner: '' },
+  maintenance: { label: 'Maintenance', className: 'status-maintenance', banner: 'Machine is under maintenance.' },
+  out_of_service: { label: 'Out of Service', className: 'status-out_of_service', banner: 'This unit is currently unavailable.' },
+};
+
 const state = {
   products: [],
   cart: [],
+  config: {
+    status: 'live',
+    categories: [],
+    theme: {
+      primary: '#6366f1',
+      accent: '#0ea5e9',
+      backgroundTop: '#f5f8ff',
+      backgroundBottom: '#eef2fb',
+    },
+  },
   filters: {
     category: 'all',
   },
@@ -14,44 +30,17 @@ const currencyFormatter = new Intl.NumberFormat('en-IN', {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupListeners();
-  fetchProducts();
+  loadInitialData();
   initAdminAccess();
   initPassKeypad();
 });
 
-function initAdminAccess() {
-  const statusPill = document.querySelector('.status-pill');
-  if (!statusPill) return;
-  let holdTimer = null;
-
-  const startHold = () => {
-    if (holdTimer) clearTimeout(holdTimer);
-    holdTimer = setTimeout(() => {
-      showPassOverlay();
-    }, 5000);
-  };
-
-  const cancelHold = () => {
-    if (holdTimer) {
-      clearTimeout(holdTimer);
-      holdTimer = null;
-    }
-  };
-
-  statusPill.addEventListener('pointerdown', startHold);
-  ['pointerup', 'pointerleave', 'pointercancel'].forEach((evt) => {
-    statusPill.addEventListener(evt, cancelHold);
-  });
-}
-
 function setupListeners() {
   const checkoutBtn = document.getElementById('checkoutBtn');
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', checkout);
-  }
+  if (checkoutBtn) checkoutBtn.addEventListener('click', checkout);
 }
 
-async function fetchProducts() {
+async function loadInitialData() {
   const grid = document.getElementById('products');
   if (grid) {
     grid.innerHTML = `
@@ -60,39 +49,99 @@ async function fetchProducts() {
         <span>Loading items...</span>
       </div>`;
   }
-
   try {
-    const response = await fetch('/api/products');
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    const [configRes, productsRes] = await Promise.all([fetch('/api/config'), fetch('/api/products')]);
+    if (!configRes.ok || !productsRes.ok) {
+      throw new Error('Server unavailable');
     }
-    state.products = await response.json();
-    buildCategoryFilters();
+    state.config = await configRes.json();
+    state.products = await productsRes.json();
+    applyTheme(state.config.theme);
+    buildCategoryFilters(state.config.categories);
+    applyStatus(state.config.status);
     renderProducts();
     renderCartPanel();
-    hideSplash();
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error loading kiosk data:', error);
     if (grid) {
-      grid.innerHTML = `<div class="empty-state">Could not load items.<br>${error.message}</div>`;
+      grid.innerHTML = `<div class="empty-state">Unable to load inventory.<br>${error.message}</div>`;
     }
+  } finally {
     hideSplash();
   }
 }
 
-function buildCategoryFilters() {
+function applyStatus(status) {
+  const pill = document.querySelector('.status-pill');
+  const banner = document.getElementById('statusBanner');
+  const overlay = document.getElementById('statusOverlay');
+  const meta = STATUS_META[status] || STATUS_META.live;
+
+  if (pill) {
+    pill.textContent = meta.label;
+    pill.classList.remove('status-live', 'status-maintenance', 'status-out_of_service');
+    pill.classList.add(meta.className);
+  }
+
+  if (banner) {
+    if (meta.banner) {
+      banner.textContent = meta.banner;
+      banner.classList.toggle('out-of-service', status === 'out_of_service');
+      banner.classList.add('visible');
+    } else {
+      banner.classList.remove('visible', 'out-of-service');
+      banner.textContent = '';
+    }
+  }
+
+  if (overlay) {
+    const title = overlay.querySelector('h1');
+    const message = overlay.querySelector('p');
+    if (title) title.textContent = meta.label;
+    if (message) message.textContent = meta.banner || 'Please check back soon.';
+    if (status === 'out_of_service') {
+      overlay.classList.add('visible');
+    } else {
+      overlay.classList.remove('visible');
+    }
+  }
+}
+
+function initAdminAccess() {
+  const statusPill = document.querySelector('.status-pill');
+  if (!statusPill) return;
+  let tapCount = 0;
+  let lastTap = 0;
+
+  statusPill.addEventListener('pointerdown', () => {
+    const now = Date.now();
+    if (now - lastTap > 2000) {
+      tapCount = 0;
+    }
+    tapCount += 1;
+    lastTap = now;
+    if (tapCount >= 10) {
+      tapCount = 0;
+      showPassOverlay();
+    }
+  });
+}
+
+function buildCategoryFilters(categories = []) {
   const container = document.getElementById('categoryFilters');
   if (!container) return;
 
-  const fragment = document.createDocumentFragment();
-  fragment.appendChild(createFilterButton('All', 'all'));
-
-  const categories = Array.from(new Set(state.products.map((item) => item.category))).sort();
-  categories.forEach((category) => {
-    fragment.appendChild(createFilterButton(category, category));
-  });
+  const list = categories && categories.length ? categories : Array.from(new Set(state.products.map((item) => item.category))).sort();
+  if (state.filters.category !== 'all' && !list.includes(state.filters.category)) {
+    state.filters.category = 'all';
+  }
 
   container.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(createFilterButton('All', 'all'));
+  list.forEach((category) => {
+    fragment.appendChild(createFilterButton(category, category));
+  });
   container.appendChild(fragment);
 }
 
@@ -111,26 +160,23 @@ function createFilterButton(label, value) {
 }
 
 function getFilteredProducts() {
-  return state.products.filter((product) => {
-    return state.filters.category === 'all' || product.category === state.filters.category;
-  });
+  return state.products.filter((product) => state.filters.category === 'all' || product.category === state.filters.category);
 }
 
 function renderProducts() {
   const container = document.getElementById('products');
   if (!container) return;
-
   const products = getFilteredProducts();
   if (products.length === 0) {
-    container.innerHTML = '<div class="empty-state">No items match that search.</div>';
+    container.innerHTML = '<div class="empty-state">No items to display.</div>';
     return;
   }
 
+  const locked = state.config.status !== 'live';
   container.innerHTML = '';
   products.forEach((product) => {
-    const inCart = getCartQuantity(product.id);
-    const stockLeft = Math.max(product.stock - inCart, 0);
-
+    const currentQty = getCartQuantity(product.id);
+    const stockLeft = product.stock - currentQty;
     const card = document.createElement('article');
     card.className = 'product-card';
     card.innerHTML = `
@@ -139,14 +185,20 @@ function renderProducts() {
         <h3 class="product-title">${product.title}</h3>
       </div>
       <div class="product-info">
-        <span class="price">${formatCurrency(product.price)}</span>
-        <span class="stock">${stockLeft > 0 ? `${stockLeft} left` : 'Out of stock'}</span>
+        <div class="info-block">
+          <span class="info-label">Price</span>
+          <span class="price">${formatCurrency(product.price)}</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Stock</span>
+          <span class="stock">${stockLeft > 0 ? `${stockLeft} left` : 'Out of stock'}</span>
+        </div>
       </div>
       <div class="product-actions">
         <div class="quantity">
-          <button onclick="changeProductQty('${product.id}', -1)" ${inCart <= 0 ? 'disabled' : ''}>-</button>
-          <span>${inCart}</span>
-          <button onclick="changeProductQty('${product.id}', 1)" ${stockLeft <= 0 ? 'disabled' : ''}>+</button>
+          <button ${locked ? 'disabled' : ''} onclick="changeProductQty('${product.id}', -1)">-</button>
+          <span>${currentQty}</span>
+          <button ${locked || stockLeft <= 0 ? 'disabled' : ''} onclick="changeProductQty('${product.id}', 1)">+</button>
         </div>
       </div>
     `;
@@ -160,22 +212,20 @@ function getCartQuantity(id) {
 }
 
 function changeProductQty(id, delta) {
+  if (state.config.status !== 'live') return;
   const product = state.products.find((entry) => entry.id === id);
   if (!product) return;
 
-  const cartItem = state.cart.find((entry) => entry.id === id);
-
-  if (!cartItem && delta > 0 && product.stock > 0) {
-    state.cart.push({ ...product, quantity: 1 });
-  } else if (cartItem) {
-    const next = cartItem.quantity + delta;
-    if (next <= 0) {
-      state.cart = state.cart.filter((entry) => entry.id !== id);
-    } else if (next <= product.stock) {
-      cartItem.quantity = next;
-    } else {
-      cartItem.quantity = product.stock;
+  const existingIndex = state.cart.findIndex((entry) => entry.id === id);
+  if (existingIndex >= 0) {
+    state.cart[existingIndex].quantity += delta;
+    if (state.cart[existingIndex].quantity <= 0) {
+      state.cart.splice(existingIndex, 1);
+    } else if (state.cart[existingIndex].quantity > product.stock) {
+      state.cart[existingIndex].quantity = product.stock;
     }
+  } else if (delta > 0) {
+    state.cart.push({ ...product, quantity: 1 });
   }
 
   renderProducts();
@@ -186,10 +236,15 @@ function renderCartPanel() {
   const cartList = document.getElementById('cartItems');
   if (!cartList) return;
 
-  if (state.cart.length === 0) {
+  const locked = state.config.status !== 'live';
+  const cartIsEmpty = state.cart.length === 0;
+
+  cartList.innerHTML = '';
+  if (locked) {
+    cartList.innerHTML = '<div class="cart-empty">Machine unavailable right now</div>';
+  } else if (cartIsEmpty) {
     cartList.innerHTML = '<div class="cart-empty">Cart is empty</div>';
   } else {
-    cartList.innerHTML = '';
     state.cart.forEach((item) => {
       const row = document.createElement('div');
       row.className = 'cart-item';
@@ -199,24 +254,22 @@ function renderCartPanel() {
           <span>${formatCurrency(item.price)} x ${item.quantity}</span>
         </div>
         <div class="cart-item-controls">
-          <button onclick="changeProductQty('${item.id}', -1)">-</button>
+          <button ${locked ? 'disabled' : ''} onclick="changeProductQty('${item.id}', -1)">-</button>
           <span>${item.quantity}</span>
-          <button onclick="changeProductQty('${item.id}', 1)" ${item.quantity >= item.stock ? 'disabled' : ''}>+</button>
+          <button ${locked ? 'disabled' : ''} onclick="changeProductQty('${item.id}', 1)">+</button>
         </div>
       `;
       cartList.appendChild(row);
     });
   }
 
-  const total = formatCurrency(calculateCartTotal());
-  const totalElement = document.getElementById('cartTotal');
-  if (totalElement) {
-    totalElement.innerText = total;
-  }
+  const total = document.getElementById('cartTotal');
+  if (total) total.textContent = formatCurrency(calculateCartTotal());
 
   const checkoutBtn = document.getElementById('checkoutBtn');
   if (checkoutBtn) {
-    checkoutBtn.disabled = state.cart.length === 0;
+    checkoutBtn.disabled = locked || cartIsEmpty;
+    checkoutBtn.textContent = locked ? 'Unavailable' : 'Checkout';
   }
 
   const countElement = document.getElementById('cartCount');
@@ -231,7 +284,7 @@ function calculateCartTotal() {
 }
 
 function checkout() {
-  if (state.cart.length === 0) return;
+  if (state.config.status !== 'live' || state.cart.length === 0) return;
   alert(`Checkout successful!\nTotal: ${formatCurrency(calculateCartTotal())}`);
   state.cart = [];
   renderProducts();
@@ -240,6 +293,17 @@ function checkout() {
 
 function formatCurrency(value) {
   return currencyFormatter.format(value || 0);
+}
+
+function applyTheme(theme = {}) {
+  const root = document.documentElement;
+  if (theme.primary) {
+    root.style.setProperty('--primary', theme.primary);
+    root.style.setProperty('--primary-strong', theme.primary);
+  }
+  if (theme.accent) root.style.setProperty('--accent', theme.accent);
+  if (theme.backgroundTop) root.style.setProperty('--bg-top', theme.backgroundTop);
+  if (theme.backgroundBottom) root.style.setProperty('--bg-bottom', theme.backgroundBottom);
 }
 
 function hideSplash() {
@@ -279,7 +343,7 @@ function initPassKeypad() {
 function updatePassDisplay() {
   const display = document.getElementById('passDisplay');
   if (display) {
-    display.textContent = passValue.padEnd(6, '•');
+    display.textContent = passValue.padEnd(6, '\u2022');
   }
 }
 
